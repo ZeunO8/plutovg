@@ -75,35 +75,39 @@ write_basic_package_version_file(plutovgConfigVersion.cmake
     COMPATIBILITY SameMajorVersion
 )
 
-include(GNUInstallDirs)
-install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/plutovg.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/plutovg
-)
+option(PLUTOVG_INSTALL "Install PlutoVG" ON)
 
-install(TARGETS plutovg
-    EXPORT plutovgTargets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+if(PLUTOVG_INSTALL)
+    include(GNUInstallDirs)
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/plutovg.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/plutovg
+    )
 
-install(EXPORT plutovgTargets
-    FILE plutovgTargets.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/plutovg
-    NAMESPACE plutovg::
-)
+    install(TARGETS plutovg
+        EXPORT plutovgTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
 
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/plutovgConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/plutovgConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/plutovg
-)
+    install(EXPORT plutovgTargets
+        FILE plutovgTargets.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/plutovg
+        NAMESPACE plutovg::
+    )
 
-export(EXPORT plutovgTargets
-    FILE ${CMAKE_CURRENT_BINARY_DIR}/plutovgTargets.cmake
-    NAMESPACE plutovg::
-)
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/plutovgConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/plutovgConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/plutovg
+    )
+
+    export(EXPORT plutovgTargets
+        FILE ${CMAKE_CURRENT_BINARY_DIR}/plutovgTargets.cmake
+        NAMESPACE plutovg::
+    )
+endif()
 
 option(PLUTOVG_BUILD_EXAMPLES "Build examples" ON)
 if(PLUTOVG_BUILD_EXAMPLES)
